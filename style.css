@@ -1,0 +1,133 @@
+body {
+  font-family: Arial, sans-serif;
+  background: #f7fafe;
+  margin: 0;
+  padding: 0;
+  color: #222;
+}
+.container {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 40px 20px;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  margin-top: 150px;
+}
+.hidden {
+  display: none;
+}
+.uth-logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.uth-left {
+  font-family: "Times New Roman", serif;
+  font-size: 65px;
+  color: #00695c;
+  font-weight: bold;
+}
+
+.uth-right {
+  line-height: 1.2;
+}
+
+.uth-right .line1 {
+  font-size: 14px;
+  font-weight: bold;
+  color: #d32f2f;
+  font-family: Arial, sans-serif;
+  text-transform: uppercase;
+  text-align: left;
+}
+
+.uth-right .line2 {
+  font-size: 14px;
+  font-weight: bold;
+  color: #d32f2f;
+  font-family: Arial, sans-serif;
+  text-transform: uppercase;
+  text-align: left;
+}
+
+h2 {
+  margin-top: 10px;
+  color: #0d47a1;
+}
+.sub-title {
+  color: #555;
+  margin-bottom: 30px;
+}
+.cards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+}
+.card {
+  background: #f1f8ff;
+  padding: 20px;
+  border-radius: 10px;
+  flex: 1 1 250px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+.card-icon {
+  font-size: 40px;
+  margin-bottom: 10px;
+}
+.card h3 {
+  color: #0d47a1;
+}
+.card p {
+  color: #444;
+  margin: 10px 0;
+}
+.card button {
+  background: #1976d2;
+  color: white;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+.footer {
+  margin-top: 30px;
+  background: #e3f2fd;
+  padding: 20px;
+  border-radius: 10px;
+}
+.footer button {
+  margin: 10px;
+  background: #0288d1;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+.login-box {
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 20px;
+  background: #e3f2fd;
+  border-radius: 10px;
+}
+.login-box input {
+  width: 100%;
+  padding: 5px;
+  margin: 10px 0;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+.login-box button {
+  width: 100%;
+  padding: 7px;
+  background: #1976d2;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}

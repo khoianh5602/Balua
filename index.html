@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+    <title>Gợi ý gửi xe cho sinh viên UTH</title>
+    <script src="script.js"></script>
+  </head>
+  <body>
+    <div class="container">
+      <div class="uth-logo">
+        <div class="uth-left">UTH</div>
+        <div class="uth-right">
+          <div class="line1">UNIVERSITY<br />OF TRANSPORT</div>
+          <div class="line2">HO CHI MINH CITY</div>
+        </div>
+      </div>
+
+      <!-- Giao diện 1: Đăng nhập -->
+      <div id="login-section" class="login-box">
+        <h3>Đăng nhập</h3>
+        <input type="text" id="studentId" placeholder="Mã số sinh viên" />
+        <input type="password" id="password" placeholder="Mật khẩu" />
+        <button onclick="login()">Đăng nhập</button>
+      </div>
+
+      <!-- Giao diện 2: Trang chính -->
+      <div id="main-section" class="hidden">
+        <h2>Gợi ý gửi xe cho sinh viên UTH</h2>
+        <p class="sub-title">
+          Tránh kẹt xe – tránh trễ học – gửi xe thông minh và tiết kiệm thời
+          gian mỗi ngày.
+        </p>
+
+        <div class="cards">
+          <div class="card">
+            <div class="card-icon">🕗</div>
+            <h3>NÊN GỬI XE KHI NÀO?</h3>
+            <p id="suggestion">
+              - Trước 8h sáng hoặc sau 9h45<br />- Đặt lịch gửi xe theo ca học
+            </p>
+            <button onclick="suggestTime(450)">Xem chi tiết</button>
+          </div>
+          <div class="card">
+            <div class="card-icon">🚦</div>
+            <h3>GIỜ CAO ĐIỂM</h3>
+            <p>
+              - 9h30 sáng, 12h10 trưa, 14h40 chiều<br />- Dễ kẹt xe và bãi đầy
+            </p>
+            <button onclick="window.location.href='parking.html'">
+              Bản đồ giờ cao điểm
+            </button>
+          </div>
+          <div class="card">
+            <div class="card-icon">⚠️</div>
+            <h3>KHÔNG GỬI ĐƯỢC XE THÌ SAO?</h3>
+            <p id="altSuggestion">
+              - Gửi ở quán xe ngoài trường<br />- Tải app để xem bãi xe con trỏ
+            </p>
+            <button onclick="checkCapacity(1001)">
+              Xem gợi ý vị trí gửi xe
+            </button>
+          </div>
+        </div>
+
+        <div class="footer">
+          <p>
+            <strong
+              >Bạn là sinh viên năm nhất? Xem video hướng dẫn gửi xe
+              ngay!</strong
+            >
+          </p>
+          <button>🎥 Xem video hướng dẫn</button>
+          <button>📲 Tải app hỗ trợ gửi xe</button>
+          <button style="background: #1976d2; color: white; padding: 10px 20px; border: none; border-radius: 6px; cursor: pointer; margin: 10px;">
+            <a href="https://forms.gle/uvVwHBxm26AemvUr7" target="_blank" style="color: white; text-decoration: none;">Gửi phản hồi</a>
+          </button>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dự đoán bãi giữ xe</title>
+    <style>
+      body {
+        font-family: sans-serif;
+        margin: 0;
+        background: linear-gradient(to bottom, #ebf8ff, white);
+        min-height: 100vh;
+      }
+      .container {
+        max-width: 1200px;
+        margin: auto;
+        padding: 2rem;
+      }
+      h1 {
+        text-align: center;
+        color: #1e40af;
+        margin-bottom: 2rem;
+        font-size: 2rem;
+      }
+      select {
+        padding: 0.5rem 1rem;
+        border-radius: 0.5rem;
+        border: 1px solid #ccc;
+      }
+      .cards {
+        display: grid;
+        gap: 1.5rem;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      }
+      .card {
+        display: inline;
+        border: 1px solid #e2e8f0;
+        border-radius: 1rem;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        padding: 1.5rem;
+        margin-right: 30px;
+      }
+      .card h2 {
+        color: #1e40af;
+        font-size: 1.25rem;
+        margin-bottom: 0.5rem;
+      }
+      .progress-bar {
+        height: 12px;
+        background-color: #d1d5db;
+        border-radius: 0.5rem;
+        overflow: hidden;
+        margin: 0.5rem 0;
+      }
+      .progress-fill {
+        height: 100%;
+        background-color: #3b82f6;
+        transition: width 0.3s;
+      }
+      .status {
+        font-weight: bold;
+        margin-top: 0.25rem;
+      }
+      .status.red {
+        color: #dc2626;
+      }
+      .status.yellow {
+        color: #f59e0b;
+      }
+      .status.green {
+        color: #16a34a;
+      }
+      .suggestion {
+        font-style: italic;
+        background-color: #fee2e2;
+        border: 1px solid #fecaca;
+        padding: 0.5rem;
+        border-radius: 0.5rem;
+        color: #b91c1c;
+        margin-top: 0.5rem;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="card">
+        <div class="card-icon">🏠</div>
+        <button onclick="goBack()" style="background: #1976d2; color: white; padding: 8px 16px; border: none; border-radius: 6px; cursor: pointer;">Về trang chính</button>
+      </div>
+      <h1>Dự đoán tình trạng bãi giữ xe</h1>
+
+      <div style="text-align: center; margin-bottom: 2rem">
+        <label for="arrivalTime">Chọn thời gian dự kiến đến:</label>
+        <select id="arrivalTime"></select>
+      </div>
+
+      <div id="cards" class="cards"></div>
+
+      <div style="text-align: center; margin-top: 20px;">
+        <textarea id="feedbackInput" rows="2" placeholder="Gửi ý kiến của bạn..." style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; resize: none; margin-bottom: 10px;"></textarea>
+        <button onclick="submitFeedback()" style="background: #1976d2; color: white; padding: 8px 16px; border: none; border-radius: 4px; cursor: pointer;">Gửi</button>
+      </div>
+    </div>
+
+    <script>
+      function getFutureTime(currentLabel, minutesToAdd) {
+        const [hourStr, minuteStr] = currentLabel.split(":");
+        const baseMinutes =
+          parseInt(hourStr) * 60 + parseInt(minuteStr) + minutesToAdd;
+        const h = Math.floor(baseMinutes / 60);
+        const m = baseMinutes % 60;
+        return `${h.toString().padStart(2, "0")}:${m
+          .toString()
+          .padStart(2, "0")}`;
+      }
+
+      function estimateFullTime(current, capacity, currentLabel) {
+        const percent = (current / capacity) * 100;
+        if (percent >= 100) return currentLabel;
+        if (percent >= 90) return getFutureTime(currentLabel, 30);
+        if (percent >= 80) return getFutureTime(currentLabel, 60);
+        if (percent >= 70) return getFutureTime(currentLabel, 90);
+        if (percent >= 50) return getFutureTime(currentLabel, 120);
+        return getFutureTime(currentLabel, 180);
+      }
+
+      function generateDynamicData() {
+        const data = {};
+        const startTime = 8 * 60;
+        const endTime = 16 * 60;
+        for (let t = startTime; t <= endTime; t += 15) {
+          const hour = Math.floor(t / 60);
+          const minute = t % 60;
+          const label = `${hour.toString().padStart(2, "0")}:${minute
+            .toString()
+            .padStart(2, "0")}`;
+
+          let a = Math.min(800, Math.floor(Math.random() * 801));
+          let b = Math.min(200, Math.floor(Math.random() * 201));
+          let c = Math.min(150, Math.floor(Math.random() * 151));
+
+          if (["14:30", "14:45"].includes(label)) {
+            a = 800;
+            b = 200;
+            c = 150;
+          } else if (label === "15:00") {
+            a = 780;
+            b = 180;
+            c = 140;
+          }
+
+          data[label] = [
+            {
+              id: 1,
+              name: "Sân chính",
+              capacity: 800,
+              current: a,
+              location: "Cổng chính",
+              fullTime: estimateFullTime(a, 800, label),
+            },
+            {
+              id: 2,
+              name: "Bãi gần tòa E",
+              capacity: 200,
+              current: b,
+              location: "Ký túc xá",
+              fullTime: estimateFullTime(b, 200, label),
+            },
+            {
+              id: 3,
+              name: "Bãi giữ xe C",
+              capacity: 150,
+              current: c,
+              location: "Thư viện",
+              fullTime: estimateFullTime(c, 150, label),
+            },
+          ];
+        }
+        return data;
+      }
+
+      const parkingDataByTime = generateDynamicData();
+
+      function predictStatus(current, capacity) {
+        const percent = (current / capacity) * 100;
+        if (percent > 90) return "Đầy";
+        if (percent > 70) return "Gần đầy";
+        return "Còn chỗ";
+      }
+
+      function suggestAlternative(currentLotId, lots, arrivalTime) {
+        const alternatives = lots.filter(
+          (lot) => lot.id !== currentLotId && lot.current / lot.capacity < 0.8
+        );
+        const allFull = lots.every((lot) => lot.current >= lot.capacity);
+        if (allFull && ["14:30", "14:45"].includes(arrivalTime)) {
+          return "Tất cả các bãi trong trường đều đã đầy. Bạn nên gửi xe ở bãi giữ xe bên ngoài khuôn viên trường.";
+        }
+        if (alternatives.length === 0)
+          return "Không có phương án thay thế phù hợp.";
+        return `Bạn nên gửi ở ${alternatives[0].name} (${alternatives[0].location}).`;
+      }
+
+      const arrivalSelect = document.getElementById("arrivalTime");
+      const cardsContainer = document.getElementById("cards");
+
+      const timeOptions = Object.keys(parkingDataByTime);
+      timeOptions.forEach((time) => {
+        const option = document.createElement("option");
+        option.value = time;
+        option.textContent = time;
+        arrivalSelect.appendChild(option);
+      });
+
+      arrivalSelect.value = "14:30";
+
+      function renderCards(arrivalTime) {
+        const lots = parkingDataByTime[arrivalTime] || [];
+        cardsContainer.innerHTML = "";
+        lots.forEach((lot) => {
+          const percent = Math.round((lot.current / lot.capacity) * 100);
+          const status = predictStatus(lot.current, lot.capacity);
+          const suggestion =
+            status === "Đầy"
+              ? suggestAlternative(lot.id, lots, arrivalTime)
+              : null;
+          const statusColor =
+            status === "Đầy"
+              ? "red"
+              : status === "Gần đầy"
+              ? "yellow"
+              : "green";
+
+          const card = document.createElement("div");
+          card.className = "card";
+          card.innerHTML = `
+            <h2>${lot.name}</h2>
+            <p>Vị trí: ${lot.location}</p>
+            <div class="progress-bar"><div class="progress-fill" style="width: ${percent}%"></div></div>
+            <p class="status ${statusColor}">Tình trạng: ${status} (${lot.current}/${lot.capacity})</p>
+            <p style="font-size: 0.85rem; color: #6b7280; margin-top: 0.25rem;">Dự kiến đầy vào: ${lot.fullTime}</p>
+            ${suggestion ? `<p class="suggestion">${suggestion}</p>` : ""}
+          `;
+          cardsContainer.appendChild(card);
+        });
+      }
+
+      arrivalSelect.addEventListener("change", () =>
+        renderCards(arrivalSelect.value)
+      );
+      function goBack() {
+        window.location.href = "index.html";
+      }
+
+      function submitFeedback() {
+        const feedback = document.getElementById("feedbackInput").value;
+        if (feedback.trim()) {
+          alert("Cảm ơn bạn đã góp ý! Ý kiến đã được ghi nhận.");
+          document.getElementById("feedbackInput").value = "";
+        } else {
+          alert("Vui lòng nhập ý kiến trước khi gửi!");
+        }
+      }
+
+      renderCards("14:30");
+    </script>
+  </body>
+</html>
